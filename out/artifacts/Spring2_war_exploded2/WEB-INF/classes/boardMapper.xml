@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.memorize.board.Mapper">
+    <insert id="insertBoard" keyProperty="id">INSERT into board(writer, title, content, date) VALUES(#{writer}, #{title}, #{content}, #{date})</insert>
+    <select id="selectBoard" resultType="org.memorize.board.BoardVO">SELECT * from board</select>
+    <update id="updateBoard" keyProperty="id">UPDATE board SET writer="${writer}", title="${title}", content="${content}" WHERE id=${id}</update>
+    <delete id="deleteBoard" >DELETE FROM board WHERE id=${id}</delete>
+</mapper>
