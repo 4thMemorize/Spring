@@ -18,88 +18,46 @@ import java.util.concurrent.TimeUnit;
 @RequestMapping(value = "/api/board")
 public class BoardAPIController {
     @Autowired
-    private BoardDaoImp dao;
-
-    @Resource(name = "asyncConfig")
-    private AsyncConfig asyncConfig;
-
-    @Resource(name = "asyncTask")
-    private AsyncTask asyncTask;
+    private BoardService service;
 
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody()
     public Object insertBoard(@RequestBody Map<String, Object> param) {
-        BoardVO vo = new BoardVO();
-        Map<String, Object> result = new HashMap<>();
+        String writer = (String)param.get("writer");
+        String title = (String)param.get("title");
+        String content = (String)param.get("content");
 
-        vo.setWriter((String)param.get("writer"));;
-        vo.setTitle((String)param.get("title"));
-        vo.setContent((String)param.get("content"));
-        vo.setDate();
+        // Validate Input Values
 
-        if(dao.insertBoard(vo) > 0) {
-            System.out.println("Insert Success");
-            result.put("status", 200);
-        }
-        else {
-            System.out.println("Insert Error Occured");
-            result.put("status", 500);
-        }
-        return result;
+        return service.insert(writer, title, content);
     }
 
     @RequestMapping(method = RequestMethod.GET)
     @ResponseBody()
     public Object selectBoard() {
-        Map<String, Object> result = new HashMap<>();
-        Object list = dao.selectBoard();
-        System.out.println(list);
-        result.put("data", list);
-        if (list.getClass().getName() == "java.util.ArrayList") {
-            result.put("status", 200);
-        }
-        else {
-            result.put("status", 500);
-        }
-        System.out.println(result);
-        return result;
+        return service.select();
     }
 
     @RequestMapping(method = RequestMethod.PUT)
     @ResponseBody()
     public Object updateBoard(@RequestBody Map<String, Object> param) {
-        BoardVO vo = new BoardVO();
-        Map<String, Object> result = new HashMap<>();
-        vo.setId((Integer)param.get("id"));
-        vo.setWriter((String)param.get("writer"));
-        vo.setTitle((String)param.get("title"));
-        vo.setContent((String)param.get("content"));
-        Integer response = dao.updateBoard(vo);
+        Integer id = (Integer)param.get("id");
+        String writer = (String)param.get("writer");
+        String title = (String)param.get("title");
+        String content = (String)param.get("content");
 
-        if(response > 0) {
-            result.put("status", 200);
-        }
-        else {
-            result.put("status", 500);
-        }
-        return result;
+        //Validate Input Values
+
+        return service.update(id, writer, title, content);
     }
 
     @RequestMapping(method = RequestMethod.DELETE)
     @ResponseBody()
     public Object deleteBoard(@RequestBody Map<String, Object> param) {
-        BoardVO vo = new BoardVO();
-        Map<String, Object> result = new HashMap<>();
-        vo.setId((Integer)param.get("id"));
-        Integer response = dao.deleteBoard(vo);
+        Integer id = (Integer) param.get("id");
 
-        if(response > 0) {
-            result.put("status", 200);
-        }
-        else {
-            result.put("status", 500);
-        }
+        //Validate Input Values
 
-        return result;
+        return service.delete(id);
     }
 }
