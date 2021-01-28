@@ -10,7 +10,7 @@ import java.util.Map;
 public class BoardService {
 
     @Autowired
-    BoardDaoImp dao;
+    BoardDaoImp boardDao;
 
     public Object insert(String writer, String title, String content) {
         BoardVO vo = new BoardVO();
@@ -21,14 +21,14 @@ public class BoardService {
         vo.setContent(content);
         vo.setDate();
 
-        if (dao.insertBoard(vo) > 0) result.put("status", 200);
+        if (boardDao.insertBoard(vo) > 0) result.put("status", 200);
         else result.put("status", 500);
         return result;
     }
 
     public Object select() {
         Map<String, Object> result = new HashMap<>();
-        Object list = dao.selectBoard();
+        Object list = boardDao.selectBoard();
 
         if (list.getClass().getName() == "java.util.ArrayList") {
             result.put("data", list);
@@ -45,7 +45,7 @@ public class BoardService {
         vo.setTitle(title);
         vo.setContent(content);
 
-        if (dao.updateBoard(vo) > 0) result.put("status", 200);
+        if (boardDao.updateBoard(vo) > 0) result.put("status", 200);
         else result.put("status", 500);
 
         return result;
@@ -56,7 +56,7 @@ public class BoardService {
         Map<String, Object> result = new HashMap<>();
         vo.setId(id);
 
-        if(dao.deleteBoard(vo) > 0) result.put("status", 200);
+        if(boardDao.deleteBoard(vo) > 0) result.put("status", 200);
         else result.put("status", 500);
 
         return result;

@@ -18,7 +18,6 @@ public class BoardDaoImp implements BoardDao{
 
     @Override
     public Object selectBoard() {
-        System.out.println("DAO");
         return sqlSession.selectList(namespace+".selectBoard");
     }
 
